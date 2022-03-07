@@ -1,13 +1,13 @@
 import java.util.ArrayList;
 
-public class Hand {
+public class Tray {
     // Variable for hand object.
     public ArrayList<Tiles> hand;
 
     /**
      * Hand used to store tiles and represent a user's hand.
      */
-    public Hand(){
+    public Tray(){
         this.hand = new ArrayList<>();
         fillHand(this.hand);
     }
@@ -23,4 +23,9 @@ public class Hand {
             Bag.draw(holder);
         }
     }
+
+
+    // REPLACE WITH TEXT FILE???
+
+
 }

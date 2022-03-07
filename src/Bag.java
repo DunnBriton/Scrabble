@@ -64,7 +64,7 @@ public class Bag {
         // Z - 1 Tile.
         bagTiles.add(new Tiles('z'));
         // Blank - 2 Tiles.
-        for(int i=0;i<2;i++){ bagTiles.add(new Tiles(' ')); }
+        for(int i=0;i<2;i++){ bagTiles.add(new Tiles('*')); }
 
         // Shuffles the tiles so draw is random.
         Collections.shuffle(bagTiles);
