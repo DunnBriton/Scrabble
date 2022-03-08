@@ -71,11 +71,11 @@ public class Bag {
     }
 
     /**
-     * draw adds a tile to given hand and removes it from the Bag.
-     * @param hand - The user hand to add to.
+     * draw adds a tile to given tray and removes it from the Bag.
+     * @param tray - The user tray to add to.
      * Return void.
      */
-    public static void draw(ArrayList<Tiles> hand){
+    public static void draw(ArrayList<Tiles> tray){
         Random random = new Random();
         int i;
         // Makes sure correct call is used based on boneyard size.
@@ -85,8 +85,28 @@ public class Bag {
         else{
             i = random.nextInt(0, bagTiles.size());
         }
-        // Pulls tile, adds to hand, removes from boneyard, returns hand.
-        hand.add(bagTiles.get(i));
+        // Pulls tile, adds to tray, removes from boneyard, returns tray.
+        tray.add(bagTiles.get(i));
         bagTiles.remove(i);
+    }
+
+    /***
+     * exchangeAll is used to replace tiles in tray with the same number of new tiles.
+     * @param tray - The tray that needs tiles exchanged.
+     * @return     - Returns the modified tray.
+     */
+    public static ArrayList<Tiles> exchangeAll(ArrayList<Tiles> tray){
+        // Add tiles from tray back into the bag and shuffle.
+        bagTiles.addAll(tray);
+        Collections.shuffle(bagTiles);
+        // Saves the size of given tray and removes all tiles from tray.
+        int hold = tray.size();
+        tray.clear();
+        // Draw tiles to tray until equivalent number is drawn.
+        for(int i = 0; i < hold; i++){
+            draw(tray);
+        }
+        // Returns modified tray.
+        return tray;
     }
 }
