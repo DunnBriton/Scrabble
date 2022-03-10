@@ -1,10 +1,9 @@
 import javafx.application.Application;
 import javafx.stage.Stage;
 
-import java.io.FileWriter;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.Scanner;
+
 import static javafx.application.Platform.exit;
 
 public class MainGameLoop extends Application{
