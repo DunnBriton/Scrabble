@@ -91,7 +91,8 @@ public class Bag {
     }
 
     /***
-     * exchangeAll is used to replace tiles in tray with the same number of new tiles.
+     * exchangeAll is used to replace tiles in given tray with the
+     * same number of new tiles.
      * @param tray - The tray that needs tiles exchanged.
      * @return     - Returns the modified tray.
      */
@@ -106,6 +107,25 @@ public class Bag {
         for(int i = 0; i < hold; i++){
             draw(tray);
         }
+        // Returns modified tray.
+        return tray;
+    }
+
+    /**
+     * exchangeOne is used to replace a specific tile in given tray
+     * with a new random tile.
+     * @param tray - The tray that needs a tile replaced.
+     * @param x    - The tile index that needs to be replaced.
+     * @return     - Returns the modified tray.
+     */
+    public static ArrayList<Tiles> exchangeOne(ArrayList<Tiles> tray, int x){
+        // Stores tile, removes tile, and replaces with new tile.
+        Tiles holder = tray.get(x);
+        tray.remove(x);
+        draw(tray);
+        // Adds stored tile to the bag and shuffles tiles.
+        bagTiles.add(holder);
+        Collections.shuffle(bagTiles);
         // Returns modified tray.
         return tray;
     }

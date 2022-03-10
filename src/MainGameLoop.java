@@ -1,35 +1,45 @@
 import javafx.application.Application;
 import javafx.stage.Stage;
+
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.Scanner;
 import static javafx.application.Platform.exit;
 
 public class MainGameLoop extends Application{
     // Human player object.
-    static Human humanPlayer;
+    static Tray humanPlayer;
     // Computer player object.
-    static Computer computerPlayer;
+    static Tray computerPlayer;
     // General input scanner.
     static Scanner input = new Scanner(System.in);
 
     @Override
-    public void start(Stage primaryStage) {
-        // Creates bag "draw pile" for tiles to come from.
+    public void start(Stage primaryStage) throws IOException {
+        // Creates new bag and board.
         Bag.main();
+        Board.newBoard();
 
         // Create objects for human and computer player.
-        humanPlayer = new Human();
-        computerPlayer = new Computer();
+        humanPlayer = new Tray();
+        computerPlayer = new Tray();
 
         // Human player goes first.
-        humanTurn();
+        //humanTurn();
+
 
         Board.newBoard();
 
         exit();
     }
 
+    /**
+     * humanTurn used for User actions.
+     * Returns void.
+     */
     public void humanTurn(){
-        System.out.println("Human's Turn - " + humanPlayer.humanTray.hand);
+        System.out.println("Human's Turn - " + humanPlayer.hand);
         System.out.println("""
                 Select choice from given options.
                 1 - Play
@@ -39,9 +49,7 @@ public class MainGameLoop extends Application{
         // Do Stuff.
         String in = input.next();
         switch (in){
-            case "1" -> {
-                System.out.println("Chose Play");
-            }
+            case "1" -> System.out.println("Chose Play");
             case "2" -> {
                 System.out.println("""
                         Chose Exchange -
@@ -54,8 +62,8 @@ public class MainGameLoop extends Application{
                 switch (in){
                     case "1" -> {
                         if(Bag.bagTiles.size() > 0){
-                            Bag.exchangeAll(humanPlayer.humanTray.hand);
-                            System.out.println(humanPlayer.humanTray.hand);
+                            Bag.exchangeAll(humanPlayer.hand);
+                            System.out.println(humanPlayer.hand);
                         }
                         else{
                             System.out.println("Bag is empty, unable to " +
@@ -65,15 +73,16 @@ public class MainGameLoop extends Application{
                     }
                     case "2" -> {
                         // Do something to exchange one tile.
-                        System.out.println("Which tile to replace? - (0-" + (humanPlayer.humanTray.hand.size()-1) + ")");
-                        System.out.println(humanPlayer.humanTray.hand);
+                        System.out.println("Which tile to replace? - (0-" + (humanPlayer.hand.size()-1) + ")");
+                        System.out.println(humanPlayer.hand);
                         int inInt = input.nextInt();
 
-                        if(inInt >= 0 && inInt <= humanPlayer.humanTray.hand.size()-1){
-                            // CREATE SINGLE EXCHANGE FUNCTION AND DO EXCHANGE.
+                        if(inInt >= 0 && inInt <= humanPlayer.hand.size()-1){
+                            Bag.exchangeOne(humanPlayer.hand, inInt);
+                            System.out.println(humanPlayer.hand);
                         }
                         else{
-                            // DO INVALID SELECTION (COULD MAKE INVALID METHOD TO SAVE TYPING.
+                            invalidItems();
                         }
                     }
                     case "3" -> {
@@ -81,26 +90,20 @@ public class MainGameLoop extends Application{
                                 "tiles.\nRestarting turn.");
                         humanTurn();
                     }
-                    default  -> {
-                        System.out.println("Incorrect input, turn " +
-                                "restarting.\n");
-                        humanTurn();
-                    }
+                    default  -> invalidItems();
                 }
             }
-            case "3" -> {
-                System.out.println("Chose Pass");
-            }
-            default  -> {
-                System.out.println("Incorrect input, turn restarting.\n");
-                humanTurn();
-            }
+            case "3" -> System.out.println("Chose Pass");
+            default  -> invalidItems();
         }
-
         // Call Computer Turn
         computerTurn();
     }
 
+    /**
+     * computerTurn is used for nonUser turns.
+     * Returns void.
+     */
     public void computerTurn(){
         // Stuff for testing
         System.out.println("Got to computer turn.");
@@ -110,5 +113,15 @@ public class MainGameLoop extends Application{
 
         // Call Human Turn.
         //humanTurn();
+    }
+
+    /**
+     * invalidItems is used when an invalid input is given.
+     * Created to make code a bit cleaner.
+     * Returns void.
+     */
+    public void invalidItems(){
+        System.out.println("Invalid input, restarting turn.\n");
+        humanTurn();
     }
 }
